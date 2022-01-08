@@ -3,10 +3,11 @@
 #include "Window.h"
 
 int main() {
-	sf::RenderWindow window(sf::VideoMode(500, 500), "SFML Test");
+	sf::RenderWindow window(sf::VideoMode(1000, 1000), "Graphing Calculator");
 
 	Window graphWindow(window);
-	graphWindow.graph();
+	graphWindow.graphAxes();
+	graphWindow.graphFunction();
 
 	while (window.isOpen()) {
 		sf::Event event;

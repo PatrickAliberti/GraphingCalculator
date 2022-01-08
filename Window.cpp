@@ -5,33 +5,31 @@
 
 #include "Window.h"
 
-/**
-* Contructor
-* 
-* Sets the origin to the center of the screen, sets the minimum X and Y values to -10, and the maximum X and Y values to 10, and sets the function to sine.
-*/
+using namespace std;
+
 Window::Window(sf::RenderWindow& window) {
 	XOrigin = window.getSize().x / 2;
 	YOrigin = window.getSize().y / 2;
 
+	// Make default fullscreen?
 	XLowerLimit = -10;
 	XUpperLimit = 10;
 	YLowerLimit = -10;
 	YUpperLimit = 10;
 
-	functionExpression = "sin(X)";
+	XAxis.setPrimitiveType(sf::Lines);
+	XAxis.resize(2);
+	YAxis.setPrimitiveType(sf::Lines);
+	YAxis.resize(2);
 
 	function.setPrimitiveType(sf::Points);
 
 	numOfPoints = (XUpperLimit - XLowerLimit) / 0.1;
 	function.resize(numOfPoints);
+
+	functionExpression = "sin(X)";
 }
 
-/**
-* Contructor
-*
-* Sets the instance variables equal to the correspoding argument that is passed through the contructor
-*/
 Window::Window(sf::RenderWindow& window, double XLowerLim, double XUpperLim, double YLowerLim, double YUpperLim, std::string fx) {
 	XOrigin = window.getSize().x / 2;
 	YOrigin = window.getSize().y / 2;
@@ -51,17 +49,35 @@ Window::Window(sf::RenderWindow& window, double XLowerLim, double XUpperLim, dou
 
 // TO-DO: 
 //			Figure out how to convert string from user into computer intruction?
-void Window::graph() {
+//			By using the muparser library
+void Window::graphFunction() {
 	double YVal;
 
 	for (double XVal = XLowerLimit; XVal < XUpperLimit; XVal += 0.1) {
 		YVal = sin(XVal);
 
-		int index = (XVal - XLowerLimit) * 10;
-		function[index].position = sf::Vector2f(XOrigin + XVal*10, YOrigin + YVal*10);
+		int index = ((XVal - XLowerLimit) * 10) - 1;
+		function[index].position = sf::Vector2f(XOrigin + XVal*20, YOrigin + YVal*20);
 	}
+}
+
+void Window::graphAxes() {
+	/*
+	cout << "(" << XOrigin + XLowerLimit * 20 << ", " << YOrigin << ")" << endl;
+	cout << "(" << XOrigin + XUpperLimit * 20 << ", " << YOrigin << ")" << endl;
+	cout << "(" << YOrigin + YLowerLimit * 20 << ", " << XOrigin << ")" << endl;
+	cout << "(" << YOrigin + YUpperLimit * 20 << ", " << XOrigin << ")" << endl;
+	*/
+
+	XAxis[0].position = sf::Vector2f(XOrigin + XLowerLimit * 20, YOrigin);
+	XAxis[1].position = sf::Vector2f(XOrigin + XUpperLimit * 20, YOrigin);
+	YAxis[0].position = sf::Vector2f(XOrigin, YOrigin + YLowerLimit * 20);
+	YAxis[1].position = sf::Vector2f(XOrigin, YOrigin + YUpperLimit * 20);
 }
 
 void Window::drawTo(sf::RenderWindow& window) {
 	window.draw(function);
+
+	window.draw(XAxis);
+	window.draw(YAxis);
 }

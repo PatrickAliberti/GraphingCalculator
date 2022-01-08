@@ -1,3 +1,5 @@
+// To-do
+//			Change graph color to red 
 #pragma once
 
 #include <iostream>
@@ -13,16 +15,20 @@ private:
 	double XUpperLimit;
 	double YLowerLimit;
 	double YUpperLimit;
-
-	std::string functionExpression;
+	
+	sf::VertexArray XAxis;
+	sf::VertexArray YAxis;
 
 	sf::VertexArray function;
 	int numOfPoints;
+
+	std::string functionExpression;
 
 public:
 	Window(sf::RenderWindow&);
 	Window(sf::RenderWindow&, double, double, double, double, std::string);
 
-	void graph();
+	void graphAxes();
+	void graphFunction();
 	void drawTo(sf::RenderWindow&);
 };
