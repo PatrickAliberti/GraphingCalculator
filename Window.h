@@ -15,7 +15,7 @@ private:
 	double XUpperLimit;
 	double YLowerLimit;
 	double YUpperLimit;
-	
+
 	sf::VertexArray XAxis;
 	sf::VertexArray YAxis;
 

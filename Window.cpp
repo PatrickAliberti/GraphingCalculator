@@ -24,10 +24,14 @@ Window::Window(sf::RenderWindow& window) {
 
 	function.setPrimitiveType(sf::Points);
 
-	numOfPoints = (XUpperLimit - XLowerLimit) / 0.1;
+	numOfPoints = (XUpperLimit - XLowerLimit) / 0.01;
 	function.resize(numOfPoints);
 
 	functionExpression = "sin(X)";
+
+	for (int index = 0; index < numOfPoints; index++) {
+		function[index].color = sf::Color::Red;
+	}
 }
 
 Window::Window(sf::RenderWindow& window, double XLowerLim, double XUpperLim, double YLowerLim, double YUpperLim, std::string fx) {
@@ -43,8 +47,12 @@ Window::Window(sf::RenderWindow& window, double XLowerLim, double XUpperLim, dou
 
 	function.setPrimitiveType(sf::Points);
 
-	numOfPoints = (XUpperLimit - XLowerLimit) / 0.1;
+	numOfPoints = (XUpperLimit - XLowerLimit) / 0.01;
 	function.resize(numOfPoints);
+
+	for (int index = 0; index < numOfPoints; index++) {
+		function[index].color = sf::Color::Red;
+	}
 }
 
 // TO-DO: 
@@ -53,11 +61,9 @@ Window::Window(sf::RenderWindow& window, double XLowerLim, double XUpperLim, dou
 void Window::graphFunction() {
 	double YVal;
 
-	for (double XVal = XLowerLimit; XVal < XUpperLimit; XVal += 0.1) {
+	for (double XVal = XLowerLimit, index = 0.0; XVal < XUpperLimit; XVal += 0.01, index++) {
 		YVal = sin(XVal);
-
-		int index = ((XVal - XLowerLimit) * 10) - 1;
-		function[index].position = sf::Vector2f(XOrigin + XVal*20, YOrigin + YVal*20);
+		function[index].position = sf::Vector2f(XOrigin + XVal * 20, YOrigin + YVal * 20);
 	}
 }
 
@@ -76,8 +82,8 @@ void Window::graphAxes() {
 }
 
 void Window::drawTo(sf::RenderWindow& window) {
-	window.draw(function);
-
 	window.draw(XAxis);
 	window.draw(YAxis);
+	
+	window.draw(function);
 }
