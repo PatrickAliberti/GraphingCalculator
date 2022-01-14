@@ -1,8 +1,8 @@
 # GraphingCalculator
 
-<img width="450" alt="Screenshot 2022-01-14 133548" src="https://user-images.githubusercontent.com/56771699/149572187-ec3cc6d6-475c-416b-bfa0-ba9cfdd8a83d.png">
+![{8ED72B21-0A11-4858-88E4-A3BD08C2F2B2}](https://user-images.githubusercontent.com/56771699/149598240-68a0f3c5-ca6e-4872-944b-66cfbc992dcf.png)
 
-<img width="450" alt="Screenshot 2022-01-14 133727" src="https://user-images.githubusercontent.com/56771699/149572203-0fdfc5bf-0786-4996-9ef0-b43f6b69a81f.png">
+![{23BFD7DA-8F59-4A14-9B33-0C352674D713}](https://user-images.githubusercontent.com/56771699/149598243-16dbe5e3-4469-47a1-b9a3-c2d3bfd6aa4b.png)
 
 A simple graphing calculator made with the SFML library
 
