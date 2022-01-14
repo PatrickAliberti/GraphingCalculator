@@ -18,8 +18,8 @@ private:
 	sf::VertexArray background;
 	sf::VertexArray XAxis;
 	sf::VertexArray YAxis;
-	// sf::VertexArray XTickMars;
-	// sf::VertexArray YTickMarks;
+	sf::VertexArray XTickMarks;
+	sf::VertexArray YTickMarks;
 
 	int numOfPoints;
 	sf::VertexArray function;

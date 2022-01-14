@@ -20,6 +20,7 @@ Window::Window(sf::RenderWindow& window) {
 	YLowerLimit = -20;
 	YUpperLimit = 20;
 
+	// Background
 	background.setPrimitiveType(sf::Quads);
 	background.resize(4);
 	background[0].position = sf::Vector2f(XOrigin - 2 + XLowerLimit * 20, YOrigin + 2 + YUpperLimit * 20);
@@ -30,6 +31,7 @@ Window::Window(sf::RenderWindow& window) {
 		background[index].color = sf::Color{ 36, 36, 36 };
 	}
 
+	// X and Y-Axes
 	XAxis.setPrimitiveType(sf::Lines);
 	XAxis.resize(2);
 	YAxis.setPrimitiveType(sf::Lines);
@@ -41,6 +43,30 @@ Window::Window(sf::RenderWindow& window) {
 	for (int index = 0; index < 2; index++) {
 		XAxis[index].color = sf::Color{ 105, 105, 105 };
 		YAxis[index].color = sf::Color{ 105, 105, 105 };
+	}
+
+	// X-Axis tick marks
+	XTickMarks.setPrimitiveType(sf::Lines);
+	int numOfXTickPoints = (XUpperLimit - XLowerLimit + 1) * 2;
+	XTickMarks.resize(numOfXTickPoints);
+	for (double XTickVal = XLowerLimit, index = 0.0; XTickVal < XUpperLimit + 1; XTickVal++, index += 2) {
+		XTickMarks[index].position = sf::Vector2f(XOrigin + (index / 2) * 20 + XLowerLimit * 20, YOrigin + 5);
+		XTickMarks[index + 1].position = sf::Vector2f(XOrigin + (index / 2) * 20 + XLowerLimit * 20, YOrigin - 5);
+	}
+	for (int index = 0; index < numOfXTickPoints; index++) {
+		XTickMarks[index].color = sf::Color{ 105, 105, 105 };
+	}
+
+	// Y-Axis tick marks
+	YTickMarks.setPrimitiveType(sf::Lines);
+	int numOfYTickPoints = (YUpperLimit - YLowerLimit + 1) * 2;
+	YTickMarks.resize(numOfYTickPoints);
+	for (double YTickVal = YLowerLimit, index = 0.0; YTickVal < YUpperLimit + 1; YTickVal++, index += 2) {
+		YTickMarks[index].position = sf::Vector2f(XOrigin - 5, YOrigin + (index / 2) * 20 + YLowerLimit * 20);
+		YTickMarks[index + 1].position = sf::Vector2f(XOrigin + 5, YOrigin + (index / 2) * 20 + YLowerLimit * 20);
+	}
+	for (int index = 0; index < numOfYTickPoints; index++) {
+		YTickMarks[index].color = sf::Color{ 105, 105, 105 };
 	}
 
 	// Label Axes
@@ -85,6 +111,14 @@ Window::Window(sf::RenderWindow& window, double XLowerLim, double XUpperLim, dou
 	for (int index = 0; index < 2; index++) {
 		XAxis[index].color = sf::Color{ 105, 105, 105 };
 		YAxis[index].color = sf::Color{ 105, 105, 105 };
+	}
+
+	XTickMarks.setPrimitiveType(sf::Lines);
+	int numOfXTickPoints = (XUpperLimit - XLowerLimit) * 2;
+	XTickMarks.resize(numOfXTickPoints);
+	for (double XTickVal = XLowerLimit, index = 0.0; XTickVal < XUpperLimit; XTickVal++, index += 2) {
+		XTickMarks[index].position = sf::Vector2f(XOrigin + index / 2 + XLowerLimit * 20, YOrigin + 5);
+		XTickMarks[index + 1].position = sf::Vector2f(XOrigin + index / 2 + XLowerLimit * 20, YOrigin - 5);
 	}
 
 	// Label Axes
@@ -156,6 +190,8 @@ void Window::drawTo(sf::RenderWindow& window) {
 
 	window.draw(XAxis);
 	window.draw(YAxis);
+	window.draw(XTickMarks);
+	window.draw(YTickMarks);
 	
 	window.draw(function);
 }
