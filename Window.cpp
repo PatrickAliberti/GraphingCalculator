@@ -1,13 +1,8 @@
 // To-Do
 //			Implement tick marks/Gridlines
 //
-//			Instead ofusing numOfPoints, use size() methods
-//
-//			Make function line thicker
-//
-//			Accessors and Modifiers
-//
-//			Go to the bank
+//			Have a menu screen where the user sets the upper and lower limits for the axes and the allows user to graph multiple different functions
+
 #include <cmath>
 #include <iostream>
 
@@ -15,21 +10,22 @@
 
 #include "Window.h"
 
+// Constructors
 Window::Window(sf::RenderWindow& window) {
 	XOrigin = window.getSize().x / 2;
 	YOrigin = window.getSize().y / 2;
 
-	XLowerLimit = -10;
-	XUpperLimit = 10;
-	YLowerLimit = -10;
-	YUpperLimit = 10;
+	XLowerLimit = -20;
+	XUpperLimit = 20;
+	YLowerLimit = -20;
+	YUpperLimit = 20;
 
 	background.setPrimitiveType(sf::Quads);
 	background.resize(4);
-	background[0].position = sf::Vector2f(XOrigin + XLowerLimit * 20, YOrigin + YUpperLimit * 20);
-	background[1].position = sf::Vector2f(XOrigin + XUpperLimit * 20, YOrigin + YUpperLimit * 20);
-	background[2].position = sf::Vector2f(XOrigin + XUpperLimit * 20, YOrigin + YLowerLimit * 20);
-	background[3].position = sf::Vector2f(XOrigin + XLowerLimit * 20, YOrigin + YLowerLimit * 20);
+	background[0].position = sf::Vector2f(XOrigin - 2 + XLowerLimit * 20, YOrigin + 2 + YUpperLimit * 20);
+	background[1].position = sf::Vector2f(XOrigin + 2 + XUpperLimit * 20, YOrigin + 2 + YUpperLimit * 20);
+	background[2].position = sf::Vector2f(XOrigin + 2 + XUpperLimit * 20, YOrigin - 2 + YLowerLimit * 20);
+	background[3].position = sf::Vector2f(XOrigin - 2 + XLowerLimit * 20, YOrigin - 2 + YLowerLimit * 20);
 	for (int index = 0; index < 4; index++) {
 		background[index].color = sf::Color{ 36, 36, 36 };
 	}
@@ -38,10 +34,10 @@ Window::Window(sf::RenderWindow& window) {
 	XAxis.resize(2);
 	YAxis.setPrimitiveType(sf::Lines);
 	YAxis.resize(2);
-	XAxis[0].position = sf::Vector2f(XOrigin + XLowerLimit * 20, YOrigin);
-	XAxis[1].position = sf::Vector2f(XOrigin + XUpperLimit * 20, YOrigin);
-	YAxis[0].position = sf::Vector2f(XOrigin, YOrigin + YLowerLimit * 20);
-	YAxis[1].position = sf::Vector2f(XOrigin, YOrigin + YUpperLimit * 20);
+	XAxis[0].position = sf::Vector2f(XOrigin - 2 + XLowerLimit * 20, YOrigin);
+	XAxis[1].position = sf::Vector2f(XOrigin + 2 + XUpperLimit * 20, YOrigin);
+	YAxis[0].position = sf::Vector2f(XOrigin, YOrigin - 2 + YLowerLimit * 20);
+	YAxis[1].position = sf::Vector2f(XOrigin, YOrigin + 2 + YUpperLimit * 20);
 	for (int index = 0; index < 2; index++) {
 		XAxis[index].color = sf::Color{ 105, 105, 105 };
 		YAxis[index].color = sf::Color{ 105, 105, 105 };
@@ -59,8 +55,6 @@ Window::Window(sf::RenderWindow& window) {
 	functionExpression = "sin(X)";
 }
 
-// To-Do
-//			Make this constructor do the same as the other
 Window::Window(sf::RenderWindow& window, double XLowerLim, double XUpperLim, double YLowerLim, double YUpperLim, std::string fx) {
 	XOrigin = window.getSize().x / 2;
 	YOrigin = window.getSize().y / 2;
@@ -70,16 +64,71 @@ Window::Window(sf::RenderWindow& window, double XLowerLim, double XUpperLim, dou
 	YLowerLimit = YLowerLim;
 	YUpperLimit = YUpperLim;
 
-	functionExpression = fx;
+	background.setPrimitiveType(sf::Quads);
+	background.resize(4);
+	background[0].position = sf::Vector2f(XOrigin - 2 + XLowerLimit * 20, YOrigin + 2 + YUpperLimit * 20);
+	background[1].position = sf::Vector2f(XOrigin + 2 + XUpperLimit * 20, YOrigin + 2 + YUpperLimit * 20);
+	background[2].position = sf::Vector2f(XOrigin + 2 + XUpperLimit * 20, YOrigin - 2 + YLowerLimit * 20);
+	background[3].position = sf::Vector2f(XOrigin - 2 + XLowerLimit * 20, YOrigin - 2 + YLowerLimit * 20);
+	for (int index = 0; index < 4; index++) {
+		background[index].color = sf::Color{ 36, 36, 36 };
+	}
 
-	function.setPrimitiveType(sf::Points);
+	XAxis.setPrimitiveType(sf::Lines);
+	XAxis.resize(2);
+	YAxis.setPrimitiveType(sf::Lines);
+	YAxis.resize(2);
+	XAxis[0].position = sf::Vector2f(XOrigin - 2 + XLowerLimit * 20, YOrigin);
+	XAxis[1].position = sf::Vector2f(XOrigin + 2 + XUpperLimit * 20, YOrigin);
+	YAxis[0].position = sf::Vector2f(XOrigin, YOrigin - 2 + YLowerLimit * 20);
+	YAxis[1].position = sf::Vector2f(XOrigin, YOrigin + 2 + YUpperLimit * 20);
+	for (int index = 0; index < 2; index++) {
+		XAxis[index].color = sf::Color{ 105, 105, 105 };
+		YAxis[index].color = sf::Color{ 105, 105, 105 };
+	}
 
-	numOfPoints = ((XUpperLimit - XLowerLimit) / 0.001);
+	// Label Axes
+
+	function.setPrimitiveType(sf::Quads);
+	numOfPoints = ((XUpperLimit - XLowerLimit) / .001) * 4;
 	function.resize(numOfPoints);
-
 	for (int index = 0; index < numOfPoints; index++) {
 		function[index].color = sf::Color::Red;
 	}
+}
+
+// Accessors
+double Window::getXLowerLimit() {
+	return XLowerLimit;
+}
+
+double Window::getXUpperLimit() {
+	return XUpperLimit;
+}
+
+double Window::getYLowerLimit() {
+	return YLowerLimit;
+}
+
+double Window::getYUpperLimit() {
+	return YUpperLimit;
+}
+
+// Mutators
+void Window::setXLowerLimit(double XLowLim) {
+	XLowerLimit = XLowLim;
+}
+
+void Window::setXUpperLimit(double XUppLim) {
+	XUpperLimit = XUppLim;
+}
+
+void Window::setYLowerLimit(double YLowLim) {
+	YLowerLimit = YLowLim;
+}
+
+void Window::setYUpperLimit(double XUppLim) {
+	XUpperLimit = XUppLim;
 }
 
 // To-Do: 
@@ -89,7 +138,8 @@ void Window::graphFunction() {
 	double YVal;
 
 	for (double XVal = XLowerLimit, index = 0.0; XVal < XUpperLimit; XVal += 0.001, index += 4) {
-		YVal = (XVal*XVal*XVal)-2*XVal;
+		// YVal = (XVal*XVal*XVal)-2*XVal;
+		YVal = tan(XVal);
 		if (YVal > YUpperLimit || YVal < YLowerLimit) {
 			continue;
 		}
