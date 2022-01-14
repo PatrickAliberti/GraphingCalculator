@@ -17,20 +17,17 @@ private:
 	// Do these need to be members?
 	sf::VertexArray XAxis;
 	sf::VertexArray YAxis;
-	sf::VertexArray XTicks;
-	sf::VertexArray YTicks;
 
-	sf::VertexArray function;
 	int numOfPoints;
+	sf::VertexArray function;
+
+	sf::VertexArray background;
 
 	std::string functionExpression;
 
 public:
 	Window(sf::RenderWindow&);
 	Window(sf::RenderWindow&, double, double, double, double, std::string);
-
-	void graphAxes();
-	// method for labelling axes
 
 	void graphFunction();
 	void drawTo(sf::RenderWindow&);
