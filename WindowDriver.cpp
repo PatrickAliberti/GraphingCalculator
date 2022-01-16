@@ -6,7 +6,7 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "Graphing Calculator");
 
 	Window graphWindow(window);
-	graphWindow.graphFunction();
+	graphWindow.graphFunction(window);
 
 	while (window.isOpen()) {
 		sf::Event event;

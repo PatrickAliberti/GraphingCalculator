@@ -31,18 +31,18 @@ public:
 	Window(sf::RenderWindow&);
 	Window(sf::RenderWindow&, double, double, double, double, std::string);
 
-	// Accessors
-	double getXLowerLimit();
-	double getXUpperLimit();
-	double getYLowerLimit();
-	double getYUpperLimit();
-
 	// Mutators
 	void setXLowerLimit(double);
 	void setXUpperLimit(double);
 	void setYLowerLimit(double);
 	void setYUpperLimit(double);
 
-	void graphFunction();
+	// Accessors
+	double getXLowerLimit();
+	double getXUpperLimit();
+	double getYLowerLimit();
+	double getYUpperLimit();
+
+	void graphFunction(sf::RenderWindow&);
 	void drawTo(sf::RenderWindow&);
 };
