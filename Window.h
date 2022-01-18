@@ -14,22 +14,25 @@ private:
 	double YLowerLimit;
 	double YUpperLimit;
 
-	// Do these need to be members?
+	double XScale;
+	double YScale;
+
 	sf::VertexArray background;
 	sf::VertexArray XAxis;
 	sf::VertexArray YAxis;
 	sf::VertexArray XTickMarks;
 	sf::VertexArray YTickMarks;
 
-	int numOfPoints;
 	sf::VertexArray function;
 
 	std::string functionExpression;
 
+	void setWindow();
+
 public:
 	// Constructors
 	Window(sf::RenderWindow&);
-	Window(sf::RenderWindow&, double, double, double, double, std::string);
+	Window(sf::RenderWindow&, double, double, double, double, double, double);
 
 	// Mutators
 	void setXLowerLimit(double);
