@@ -35,16 +35,24 @@ public:
 	Window(sf::RenderWindow&, double, double, double, double, double, double);
 
 	// Mutators
+	void setXOrigin(double);
+	void setYOrigin(double);
 	void setXLowerLimit(double);
 	void setXUpperLimit(double);
 	void setYLowerLimit(double);
 	void setYUpperLimit(double);
+	void setXScale(double);
+	void setYScale(double);
 
 	// Accessors
+	double getXOrigin();
+	double getYOrigin();
 	double getXLowerLimit();
 	double getXUpperLimit();
 	double getYLowerLimit();
 	double getYUpperLimit();
+	double getXScale();
+	double getYScale();
 
 	void graphFunction(sf::RenderWindow&);
 	void drawTo(sf::RenderWindow&);

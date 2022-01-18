@@ -13,10 +13,10 @@ Window::Window(sf::RenderWindow& window) {
 	XOrigin = window.getSize().x / 2;
 	YOrigin = window.getSize().y / 2;
 
-	XLowerLimit = -10;
-	XUpperLimit = 10;
-	YLowerLimit = -10;
-	YUpperLimit = 10;
+	XLowerLimit = -20;
+	XUpperLimit = 20;
+	YLowerLimit = -20;
+	YUpperLimit = 20;
 
 	XScale = 1;
 	YScale = 1;
@@ -116,22 +116,24 @@ void Window::setWindow() {
 }
 
 // Mutators
+void Window::setXOrigin(double XOrig) { XOrigin = XOrig; }
+void Window::setYOrigin(double YOrig) { YOrigin = YOrig; }
 void Window::setXLowerLimit(double XLowLim) { XLowerLimit = XLowLim; }
-
 void Window::setXUpperLimit(double XUppLim) { XUpperLimit = XUppLim; }
-
 void Window::setYLowerLimit(double YLowLim) { YLowerLimit = YLowLim; }
-
 void Window::setYUpperLimit(double XUppLim) { XUpperLimit = XUppLim; }
+void Window::setXScale(double XScl) { XScale = XScl; }
+void Window::setYScale(double YScl) { YScale = YScl; }
 
 // Accessors
+double Window::getXOrigin() { return XOrigin; }
+double Window::getYOrigin() { return YOrigin; }
 double Window::getXLowerLimit() { return XLowerLimit; }
-
 double Window::getXUpperLimit() { return XUpperLimit; }
-
 double Window::getYLowerLimit() { return YLowerLimit; }
-
 double Window::getYUpperLimit() { return YUpperLimit; }
+double Window::getXScale() { return XScale; }
+double Window::getYScale() { return YScale; }
 
 // To-Do: 
 //			Convert string from user into computer intruction
@@ -141,16 +143,16 @@ void Window::graphFunction(sf::RenderWindow& window) {
 
 	for (double XVal = XLowerLimit, index = 0.0; XVal < XUpperLimit; XVal += 0.001, index += 4) {
 		// YVal = (XVal*XVal*XVal)-2*XVal;
-		// YVal = tan(XVal);
-		YVal = sin(XVal);
+		YVal = tan(XVal);
+		// YVal = sin(XVal);
 		if (YVal > YUpperLimit || YVal < YLowerLimit) {
 			continue;
 		}
 
-		function[index].position = sf::Vector2f((XOrigin + XVal * 25) + 1.f, (YOrigin - YVal * 25) - 1.f);
-		function[index + 1].position = sf::Vector2f((XOrigin + XVal * 25) - 1.f, (YOrigin - YVal * 25) - 1.f);
-		function[index + 2].position = sf::Vector2f((XOrigin + XVal * 25) - 1.f, (YOrigin - YVal * 25) + 1.f);
-		function[index + 3].position = sf::Vector2f((XOrigin + XVal * 25) + 1.f, (YOrigin - YVal * 25) + 1.f);
+		function[index].position = sf::Vector2f((XOrigin + XVal * 25) + 1.f, (YOrigin - YVal * 25) - YVal/4);
+		function[index + 1].position = sf::Vector2f((XOrigin + XVal * 25) - 1.f, (YOrigin - YVal * 25) - YVal/4);
+		function[index + 2].position = sf::Vector2f((XOrigin + XVal * 25) - 1.f, (YOrigin - YVal * 25) + YVal/4);
+		function[index + 3].position = sf::Vector2f((XOrigin + XVal * 25) + 1.f, (YOrigin - YVal * 25) + YVal/4);
 	}
 }
 
@@ -161,6 +163,6 @@ void Window::drawTo(sf::RenderWindow& window) {
 	window.draw(YAxis);
 	window.draw(XTickMarks);
 	window.draw(YTickMarks);
-	
+
 	window.draw(function);
 }
