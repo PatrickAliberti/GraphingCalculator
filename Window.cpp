@@ -6,6 +6,7 @@
 
 #include "SFML/Graphics.hpp"
 
+#include "shunting-yard.h"
 #include "Window.h"
 
 // Constructors
@@ -15,18 +16,20 @@ Window::Window(sf::RenderWindow& window) {
 	// XOrigin = 200;
 	// YOrigin = 200;
 
-	XLowerLimit = -20;
-	XUpperLimit = 20;
-	YLowerLimit = -20;
-	YUpperLimit = 20;
+	XLowerLimit = -200;
+	XUpperLimit = 200;
+	YLowerLimit = -200;
+	YUpperLimit = 200;
 
 	XScale = 1;
 	YScale = 1;
 
 	setWindow(window);
+
+	functionExpression = "-tan(x)";
 }
 
-Window::Window(sf::RenderWindow& window, double XLowerLim, double XUpperLim, double YLowerLim, double YUpperLim, double XScl, double YScl) {
+Window::Window(sf::RenderWindow& window, double XLowerLim, double XUpperLim, double YLowerLim, double YUpperLim, double XScl, double YScl, std::string fxEx) {
 	XOrigin = window.getSize().x / 2;
 	YOrigin = window.getSize().y / 2;
 
@@ -39,6 +42,8 @@ Window::Window(sf::RenderWindow& window, double XLowerLim, double XUpperLim, dou
 	YScale = YScl;
 
 	setWindow(window);
+
+	functionExpression = fxEx;
 }
 
 /**
@@ -68,8 +73,8 @@ void Window::setWindow(sf::RenderWindow& window) {
 	YAxis[0].position = sf::Vector2f(XOrigin, YOrigin - 2 + YLowerLimit * Zoom);
 	YAxis[1].position = sf::Vector2f(XOrigin, YOrigin + 2 + YUpperLimit * Zoom);
 	for (int index = 0; index < 2; index++) {
-		XAxis[index].color = sf::Color{ 125, 125, 125 };
-		YAxis[index].color = sf::Color{ 125, 125, 125 };
+		XAxis[index].color = sf::Color{ 145, 145, 145 };
+		YAxis[index].color = sf::Color{ 145, 145, 145 };
 	}
 
 	// X-axis tick marks
@@ -123,6 +128,7 @@ void Window::setYUpperLimit(double XUppLim) { XUpperLimit = XUppLim; }
 void Window::setXScale(double XScl) { XScale = XScl; }
 void Window::setYScale(double YScl) { YScale = YScl; }
 void Window::setZoom(double Z) { Zoom = Z; }
+void Window::setFunctExpr(std::string functExpr) { functionExpression = functExpr; }
 
 // Accessors
 double Window::getXOrigin() { return XOrigin; }
@@ -134,31 +140,36 @@ double Window::getYUpperLimit() { return YUpperLimit; }
 double Window::getXScale() { return XScale; }
 double Window::getYScale() { return YScale; }
 double Window::getZoom() { return Zoom; }
-
-float Window::getBoundary() { return XAxis[0].position.x; }
+std::string Window::getFunctExpr() { return functionExpression; }
 
 // To-Do: 
 //			Convert string from user into computer intruction
 //			using shunting-yard header
 void Window::graphFunction(sf::RenderWindow& window) {
-	double YVal;
+	const char* functionExpressionArg = functionExpression.c_str();
+	std::map<std::string, double> vars;
+	std::map<std::string, double> vars2;
+	calculator fx(functionExpressionArg);
 
+	double YVal, YVal2;
 	for (double XVal = XLowerLimit, index = 0.0; XVal < XUpperLimit; XVal += 0.001, index += 4) {
-		// YVal = (XVal*XVal*XVal)-2*XVal;
-		YVal = -tan(XVal);
-		// YVal = sin(XVal);
-		// YVal = XVal;
+		vars["X"] = XVal;
+		vars2["X"] = XVal + 1;
+		YVal = fx.eval(&vars);
+		YVal2 = fx.eval(&vars2);
+
 		if (YVal > YUpperLimit || YVal < YLowerLimit) {
 			continue;
 		}
 
-		
-		if (((-tan(XVal + 0.001) - YVal) / ((XVal + 0.001) - XVal)) >= Zoom || ((-tan(XVal + 0.001) - YVal) / ((XVal + 0.001) - XVal)) <= -Zoom) {
+		/*
+		if ((YVal2 - YVal) * 100000000 < 2.5 || (YVal - YVal2) * 100000000 > 2.5) {
 			function[index].position = sf::Vector2f((XOrigin + XVal * Zoom) + 1.f, (YOrigin - YVal * Zoom) - YVal / 4);
 			function[index + 1].position = sf::Vector2f((XOrigin + XVal * Zoom) - 1.f, (YOrigin - YVal * Zoom) - YVal / 4);
 			function[index + 2].position = sf::Vector2f((XOrigin + XVal * Zoom) - 1.f, (YOrigin - YVal * Zoom) + YVal / 4);
 			function[index + 3].position = sf::Vector2f((XOrigin + XVal * Zoom) + 1.f, (YOrigin - YVal * Zoom) + YVal / 4);
 		}
+		*/
 		else {
 			function[index].position = sf::Vector2f((XOrigin + XVal * Zoom) + 1.f, (YOrigin - YVal * Zoom) - 1.f);
 			function[index + 1].position = sf::Vector2f((XOrigin + XVal * Zoom) - 1.f, (YOrigin - YVal * Zoom) - 1.f);

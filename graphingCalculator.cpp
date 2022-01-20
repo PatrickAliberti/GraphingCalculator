@@ -1,20 +1,23 @@
+#include <iostream>
+
 #include "SFML/Graphics.hpp"
 
 #include "shunting-yard.h"
-
+#include "UIBlock.h"
 #include "Window.h"
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "Graphing Calculator");
 
 	Window graphWindow(window);
-	graphWindow.graphFunction(window);
+	UIBlock functInput(sf::Vector2f(670, 700), sf::Vector2f(950, 700), sf::Vector2f(950, 950), sf::Vector2f(670, 950));
 
-	std::map<std::string, double> vars;
-	vars["pi"] = 3.14;
-	calculator c1("pi-b");
-	vars["b"] = 0.14;
-	std::cout << c1.eval(&vars) << std::endl;
+	// Get function expression from user
+	std::string equation;
+	std::cout << "Enter an equation: ";
+	std::cin >> equation;
+	graphWindow.setFunctExpr(equation);
+	graphWindow.graphFunction(window);
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -23,25 +26,35 @@ int main() {
 			if (event.type == sf::Event::Closed)
 				window.close();
 			
+			// Zoom
 			if (event.type == sf::Event::MouseWheelMoved) {
-				if (graphWindow.getZoom() <= 25) {
+				if (graphWindow.getZoom() <= 5) {
 					graphWindow.setZoom(graphWindow.getZoom() + 1);
-					continue;
-				}
-				else {
-					graphWindow.setZoom(graphWindow.getZoom() + event.mouseWheel.delta);
+					graphWindow.setZoom(graphWindow.getZoom() + (event.mouseWheel.delta * 4));
 					graphWindow.setWindow(window);
 					graphWindow.graphFunction(window);
 
 					window.clear();
 					graphWindow.drawTo(window);
+					functInput.drawTo(window);
 					window.display();
+					continue;
 				}
+
+				graphWindow.setZoom(graphWindow.getZoom() + (event.mouseWheel.delta * 4));
+				graphWindow.setWindow(window);
+				graphWindow.graphFunction(window);
+
+				window.clear();
+				graphWindow.drawTo(window);
+				functInput.drawTo(window);
+				window.display();
 			}
 		}
 
 		window.clear();
 		graphWindow.drawTo(window);
+		functInput.drawTo(window);
 		window.display();
 	}
 

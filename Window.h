@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 #include "SFML/Graphics.hpp"
 
 class Window {
@@ -30,7 +28,7 @@ private:
 public:
 	// Constructors
 	Window(sf::RenderWindow&);
-	Window(sf::RenderWindow&, double, double, double, double, double, double);
+	Window(sf::RenderWindow&, double, double, double, double, double, double, std::string);
 
 	// Mutators
 	void setXOrigin(double);
@@ -42,6 +40,7 @@ public:
 	void setXScale(double);
 	void setYScale(double);
 	void setZoom(double);
+	void setFunctExpr(std::string);
 
 	// Accessors
 	double getXOrigin();
@@ -53,8 +52,7 @@ public:
 	double getXScale();
 	double getYScale();
 	double getZoom();
-
-	float getBoundary();
+	std::string getFunctExpr();
 
 	void setWindow(sf::RenderWindow&);
 	void graphFunction(sf::RenderWindow&);
