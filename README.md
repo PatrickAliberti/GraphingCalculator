@@ -1,10 +1,7 @@
 # GraphingCalculator
 
-![{8ED72B21-0A11-4858-88E4-A3BD08C2F2B2}](https://user-images.githubusercontent.com/56771699/149598506-3005e731-1ba4-4fa0-a2eb-ea1576268e4b.png)
-
-![{23BFD7DA-8F59-4A14-9B33-0C352674D713}](https://user-images.githubusercontent.com/56771699/149598409-5821195b-6cb8-46ad-b430-54d3a79f95e0.png)
+![{914BB835-3215-4A10-936B-730F2943F45B}](https://user-images.githubusercontent.com/56771699/150265866-6b54cb8d-6d06-4542-a8e0-c659f8b3b9f9.png)
 
 A simple graphing calculator made with the SFML library
 
-This application contains a Window class which has instance variables for the graph's origin coordinates positions, the upper limits and lower limits for the X and Y-Axes
-which are used to determine the values of the vertex arrays that are used for the background, axes, and function plot.
+This application contains a Window class which sets the graph's background, axes, and function plot using SFML for the graphics and Jesse Brown's shunting-yard program (http://www.daniweb.com/software-development/cpp/code/427500/calculator-using-shunting-yard-algorithm#) for parsing the mathematical expressions.
