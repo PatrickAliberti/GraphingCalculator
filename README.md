@@ -4,4 +4,6 @@
 
 A simple graphing calculator made with the SFML library
 
-This application contains a Window class which sets the graph's background, axes, and function plot using SFML for the graphics and Jesse Brown's shunting-yard program (http://www.daniweb.com/software-development/cpp/code/427500/calculator-using-shunting-yard-algorithm#) for parsing the mathematical expressions.
+This application contains a Window class which sets the graph's background, axes, and function plot using SFML for the graphics and Jesse Brown's shunting-yard program 
+(http://www.daniweb.com/software-development/cpp/code/427500/calculator-using-shunting-yard-algorithm#) with modifications by Brandon Amos (https://github.com/tesch1/cpp-expression-parser) for parsing the mathematical 
+expressions.
