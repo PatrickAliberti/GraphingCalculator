@@ -12,6 +12,8 @@
 Window::Window(sf::RenderWindow& window) {
 	XOrigin = window.getSize().x / 2;
 	YOrigin = window.getSize().y / 2;
+	// XOrigin = 200;
+	// YOrigin = 200;
 
 	XLowerLimit = -20;
 	XUpperLimit = 20;
@@ -21,7 +23,7 @@ Window::Window(sf::RenderWindow& window) {
 	XScale = 1;
 	YScale = 1;
 
-	setWindow();
+	setWindow(window);
 }
 
 Window::Window(sf::RenderWindow& window, double XLowerLim, double XUpperLim, double YLowerLim, double YUpperLim, double XScl, double YScl) {
@@ -36,7 +38,7 @@ Window::Window(sf::RenderWindow& window, double XLowerLim, double XUpperLim, dou
 	XScale = XScl;
 	YScale = YScl;
 
-	setWindow();
+	setWindow(window);
 }
 
 /**
@@ -44,14 +46,14 @@ Window::Window(sf::RenderWindow& window, double XLowerLim, double XUpperLim, dou
 * 
 *	No parameters, no return value
 */
-void Window::setWindow() {
+void Window::setWindow(sf::RenderWindow& window) {
 	// Background
 	background.setPrimitiveType(sf::Quads);
 	background.resize(4);
-	background[0].position = sf::Vector2f(XOrigin - 2 + XLowerLimit * 25, YOrigin + 2 + YUpperLimit * 25);
-	background[1].position = sf::Vector2f(XOrigin + 2 + XUpperLimit * 25, YOrigin + 2 + YUpperLimit * 25);
-	background[2].position = sf::Vector2f(XOrigin + 2 + XUpperLimit * 25, YOrigin - 2 + YLowerLimit * 25);
-	background[3].position = sf::Vector2f(XOrigin - 2 + XLowerLimit * 25, YOrigin - 2 + YLowerLimit * 25);
+	background[0].position = sf::Vector2f(XOrigin - 2 + XLowerLimit * Zoom, YOrigin + 2 + YUpperLimit * Zoom);
+	background[1].position = sf::Vector2f(XOrigin + 2 + XUpperLimit * Zoom, YOrigin + 2 + YUpperLimit * Zoom);
+	background[2].position = sf::Vector2f(XOrigin + 2 + XUpperLimit * Zoom, YOrigin - 2 + YLowerLimit * Zoom);
+	background[3].position = sf::Vector2f(XOrigin - 2 + XLowerLimit * Zoom, YOrigin - 2 + YLowerLimit * Zoom);
 	for (int index = 0; index < 4; index++) {
 		background[index].color = sf::Color{ 36, 36, 36 };
 	}
@@ -61,13 +63,13 @@ void Window::setWindow() {
 	XAxis.resize(2);
 	YAxis.setPrimitiveType(sf::Lines);
 	YAxis.resize(2);
-	XAxis[0].position = sf::Vector2f(XOrigin - 2 + XLowerLimit * 25, YOrigin);
-	XAxis[1].position = sf::Vector2f(XOrigin + 2 + XUpperLimit * 25, YOrigin);
-	YAxis[0].position = sf::Vector2f(XOrigin, YOrigin - 2 + YLowerLimit * 25);
-	YAxis[1].position = sf::Vector2f(XOrigin, YOrigin + 2 + YUpperLimit * 25);
+	XAxis[0].position = sf::Vector2f(XOrigin - 2 + XLowerLimit * Zoom, YOrigin);
+	XAxis[1].position = sf::Vector2f(XOrigin + 2 + XUpperLimit * Zoom, YOrigin);
+	YAxis[0].position = sf::Vector2f(XOrigin, YOrigin - 2 + YLowerLimit * Zoom);
+	YAxis[1].position = sf::Vector2f(XOrigin, YOrigin + 2 + YUpperLimit * Zoom);
 	for (int index = 0; index < 2; index++) {
-		XAxis[index].color = sf::Color{ 105, 105, 105 };
-		YAxis[index].color = sf::Color{ 105, 105, 105 };
+		XAxis[index].color = sf::Color{ 125, 125, 125 };
+		YAxis[index].color = sf::Color{ 125, 125, 125 };
 	}
 
 	// X-axis tick marks
@@ -75,16 +77,12 @@ void Window::setWindow() {
 	int numOfXTickPoints = (XUpperLimit - XLowerLimit + 1) * 2;
 	XTickMarks.resize(numOfXTickPoints);
 	for (double XTickVal = XLowerLimit, index = 0.0; XTickVal < XUpperLimit + 1; XTickVal++, index += 2) {
-		XTickMarks[index].position = sf::Vector2f(XOrigin + ((index / 2) * XScale) * 25 + XLowerLimit * 25, YOrigin + 5);
-		XTickMarks[index + 1].position = sf::Vector2f(XOrigin + ((index / 2) * XScale) * 25 + XLowerLimit * 25, YOrigin - 5);
-
-		if (((index / 2) * XScale) >= (XUpperLimit - XLowerLimit)) {
-			break;
-		}
+		XTickMarks[index].position = sf::Vector2f(XOrigin + ((index / 2) * XScale) * Zoom + XLowerLimit * Zoom, YOrigin - 2 + YLowerLimit * Zoom);
+		XTickMarks[index + 1].position = sf::Vector2f(XOrigin + ((index / 2) * XScale) * Zoom + XLowerLimit * Zoom, YOrigin + 2 + YUpperLimit * Zoom);
 	}
 
 	for (int index = 0; index < numOfXTickPoints; index++) {
-		XTickMarks[index].color = sf::Color{ 105, 105, 105 };
+		XTickMarks[index].color = sf::Color{ 60, 60, 60 };
 	}
 
 	// Y-axis tick marks
@@ -92,8 +90,8 @@ void Window::setWindow() {
 	int numOfYTickPoints = (YUpperLimit - YLowerLimit + 1) * 2;
 	YTickMarks.resize(numOfYTickPoints);
 	for (double YTickVal = YLowerLimit, index = 0.0; YTickVal < YUpperLimit + 1; YTickVal++, index += 2) {
-		YTickMarks[index].position = sf::Vector2f(XOrigin - 5, YOrigin + ((index / 2) * YScale) * 25 + YLowerLimit * 25);
-		YTickMarks[index + 1].position = sf::Vector2f(XOrigin + 5, YOrigin + ((index / 2) * YScale) * 25 + YLowerLimit * 25);
+		YTickMarks[index].position = sf::Vector2f(XOrigin - 2 + XLowerLimit * Zoom, YOrigin + ((index / 2) * YScale) * Zoom + YLowerLimit * Zoom);
+		YTickMarks[index + 1].position = sf::Vector2f(XOrigin + 2 + XUpperLimit * Zoom, YOrigin + ((index / 2) * YScale) * Zoom + YLowerLimit * Zoom);
 
 		if (((index / 2) * YScale) >= (XUpperLimit - YLowerLimit)) {
 			break;
@@ -101,7 +99,7 @@ void Window::setWindow() {
 	}
 
 	for (int index = 0; index < numOfYTickPoints; index++) {
-		YTickMarks[index].color = sf::Color{ 105, 105, 105 };
+		YTickMarks[index].color = sf::Color{ 60, 60, 60 };
 	}
 
 	// Label Axes
@@ -124,6 +122,7 @@ void Window::setYLowerLimit(double YLowLim) { YLowerLimit = YLowLim; }
 void Window::setYUpperLimit(double XUppLim) { XUpperLimit = XUppLim; }
 void Window::setXScale(double XScl) { XScale = XScl; }
 void Window::setYScale(double YScl) { YScale = YScl; }
+void Window::setZoom(double Z) { Zoom = Z; }
 
 // Accessors
 double Window::getXOrigin() { return XOrigin; }
@@ -134,35 +133,48 @@ double Window::getYLowerLimit() { return YLowerLimit; }
 double Window::getYUpperLimit() { return YUpperLimit; }
 double Window::getXScale() { return XScale; }
 double Window::getYScale() { return YScale; }
+double Window::getZoom() { return Zoom; }
+
+float Window::getBoundary() { return XAxis[0].position.x; }
 
 // To-Do: 
 //			Convert string from user into computer intruction
-//			using the muparser library
+//			using shunting-yard header
 void Window::graphFunction(sf::RenderWindow& window) {
 	double YVal;
 
 	for (double XVal = XLowerLimit, index = 0.0; XVal < XUpperLimit; XVal += 0.001, index += 4) {
 		// YVal = (XVal*XVal*XVal)-2*XVal;
-		YVal = tan(XVal);
+		YVal = -tan(XVal);
 		// YVal = sin(XVal);
+		// YVal = XVal;
 		if (YVal > YUpperLimit || YVal < YLowerLimit) {
 			continue;
 		}
 
-		function[index].position = sf::Vector2f((XOrigin + XVal * 25) + 1.f, (YOrigin - YVal * 25) - YVal/4);
-		function[index + 1].position = sf::Vector2f((XOrigin + XVal * 25) - 1.f, (YOrigin - YVal * 25) - YVal/4);
-		function[index + 2].position = sf::Vector2f((XOrigin + XVal * 25) - 1.f, (YOrigin - YVal * 25) + YVal/4);
-		function[index + 3].position = sf::Vector2f((XOrigin + XVal * 25) + 1.f, (YOrigin - YVal * 25) + YVal/4);
+		
+		if (((-tan(XVal + 0.001) - YVal) / ((XVal + 0.001) - XVal)) >= Zoom || ((-tan(XVal + 0.001) - YVal) / ((XVal + 0.001) - XVal)) <= -Zoom) {
+			function[index].position = sf::Vector2f((XOrigin + XVal * Zoom) + 1.f, (YOrigin - YVal * Zoom) - YVal / 4);
+			function[index + 1].position = sf::Vector2f((XOrigin + XVal * Zoom) - 1.f, (YOrigin - YVal * Zoom) - YVal / 4);
+			function[index + 2].position = sf::Vector2f((XOrigin + XVal * Zoom) - 1.f, (YOrigin - YVal * Zoom) + YVal / 4);
+			function[index + 3].position = sf::Vector2f((XOrigin + XVal * Zoom) + 1.f, (YOrigin - YVal * Zoom) + YVal / 4);
+		}
+		else {
+			function[index].position = sf::Vector2f((XOrigin + XVal * Zoom) + 1.f, (YOrigin - YVal * Zoom) - 1.f);
+			function[index + 1].position = sf::Vector2f((XOrigin + XVal * Zoom) - 1.f, (YOrigin - YVal * Zoom) - 1.f);
+			function[index + 2].position = sf::Vector2f((XOrigin + XVal * Zoom) - 1.f, (YOrigin - YVal * Zoom) + 1.f);
+			function[index + 3].position = sf::Vector2f((XOrigin + XVal * Zoom) + 1.f, (YOrigin - YVal * Zoom) + 1.f);
+		}
 	}
 }
 
 void Window::drawTo(sf::RenderWindow& window) {
 	window.draw(background);
 
-	window.draw(XAxis);
-	window.draw(YAxis);
 	window.draw(XTickMarks);
 	window.draw(YTickMarks);
+	window.draw(XAxis);
+	window.draw(YAxis);
 
 	window.draw(function);
 }

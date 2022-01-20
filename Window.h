@@ -8,14 +8,14 @@ class Window {
 private:
 	double XOrigin;
 	double YOrigin;
-
 	double XLowerLimit;
 	double XUpperLimit;
 	double YLowerLimit;
 	double YUpperLimit;
-
 	double XScale;
 	double YScale;
+
+	double Zoom = 50;
 
 	sf::VertexArray background;
 	sf::VertexArray XAxis;
@@ -26,8 +26,6 @@ private:
 	sf::VertexArray function;
 
 	std::string functionExpression;
-
-	void setWindow();
 
 public:
 	// Constructors
@@ -43,6 +41,7 @@ public:
 	void setYUpperLimit(double);
 	void setXScale(double);
 	void setYScale(double);
+	void setZoom(double);
 
 	// Accessors
 	double getXOrigin();
@@ -53,7 +52,11 @@ public:
 	double getYUpperLimit();
 	double getXScale();
 	double getYScale();
+	double getZoom();
 
+	float getBoundary();
+
+	void setWindow(sf::RenderWindow&);
 	void graphFunction(sf::RenderWindow&);
 	void drawTo(sf::RenderWindow&);
 };
