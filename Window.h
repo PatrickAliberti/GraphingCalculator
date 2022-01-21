@@ -23,7 +23,8 @@ private:
 
 	sf::VertexArray function;
 
-	std::string functionExpression;
+	std::string functionExpression = "";
+	std::string tempFunctionExpression = "X^3";
 
 public:
 	// Constructors
@@ -40,7 +41,8 @@ public:
 	void setXScale(double);
 	void setYScale(double);
 	void setZoom(double);
-	void setFunctExpr(std::string);
+	void setFunctExpr(char);
+	void setTempFunctExpr(std::string);
 
 	// Accessors
 	double getXOrigin();

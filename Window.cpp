@@ -128,7 +128,15 @@ void Window::setYUpperLimit(double XUppLim) { XUpperLimit = XUppLim; }
 void Window::setXScale(double XScl) { XScale = XScl; }
 void Window::setYScale(double YScl) { YScale = YScl; }
 void Window::setZoom(double Z) { Zoom = Z; }
-void Window::setFunctExpr(std::string functExpr) { functionExpression = functExpr; }
+
+void Window::setFunctExpr(char chTyped) {
+	std::string strTyped(1, chTyped);
+	functionExpression.append(strTyped);
+}
+
+void Window::setTempFunctExpr(std::string tempFunctExpr) {
+	tempFunctionExpression = tempFunctExpr;
+}
 
 // Accessors
 double Window::getXOrigin() { return XOrigin; }
@@ -146,7 +154,7 @@ std::string Window::getFunctExpr() { return functionExpression; }
 //			Convert string from user into computer intruction
 //			using shunting-yard header
 void Window::graphFunction(sf::RenderWindow& window) {
-	const char* functionExpressionArg = functionExpression.c_str();
+	const char* functionExpressionArg = tempFunctionExpression.c_str();
 	std::map<std::string, double> vars;
 	std::map<std::string, double> vars2;
 	calculator fx(functionExpressionArg);
