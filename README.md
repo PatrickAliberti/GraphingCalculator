@@ -1,6 +1,6 @@
 # GraphingCalculator
 
-![{914BB835-3215-4A10-936B-730F2943F45B}](https://user-images.githubusercontent.com/56771699/150265866-6b54cb8d-6d06-4542-a8e0-c659f8b3b9f9.png)
+![{914BB835-3215-4A10-936B-730F2943F45B}](https://user-images.githubusercontent.com/56771699/150608793-0801d7df-6709-4ed7-b96b-7e87f2a1b401.png)
 
 A simple graphing calculator made with the SFML library
 
